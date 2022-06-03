@@ -1,9 +1,9 @@
 {
-  "slug": "dummy-plugin",
-  "name": "Dummy Plugin",
+  "slug": "test-plugin",
+  "name": "Test Plugin",
   "version": "2.0.0",
   "license": "CC0-1.0",
-  "brand": "DummyModules",
+  "brand": "Bla",
   "author": "Public Domain",
   "authorEmail": "",
   "authorUrl": "",
@@ -14,8 +14,8 @@
   "changelogUrl": "",
   "modules": [
     {
-      "slug": "DummyModule",
-      "name": "DummyModule",
+      "slug": "HeadlessPatcher",
+      "name": "HeadlessPatcher",
       "description": "",
       "tags": []
     }
