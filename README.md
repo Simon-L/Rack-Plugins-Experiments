@@ -1,33 +1,13 @@
-# Dummy Plugin!
+# Some Rack v2 plugin experiments...
 
-Based on the helper.py script from Rack SDK and the Fundamental panels for Cardinal.
+![](https://nextcould.roselove.pink/s/Gc5imSxnMpcZXPD/preview)
 
-```bash
-git clone https://github.com/Simon-L/dummy-plugin yourdummyplugin
-cd yourdummyplugin
-export RACK_SDK=/path/to/sdk
-make
-ln -s $(pwd) ~/.Rack2/plugins/yourdummyplugin
-```
+### HeadlessPatcher
+- Made after some discussion in VCV Rack discord #development channel on the idea of running dynamic patches in headless mode
+- Adds a cable after 3 seconds and removes it before module removal on quit
+- Run only using the included patch, module id is hardcoded and don't overwrite it!
+- Try both headless and GUI mode!
 
-Rename:
-```bash
-NAME=NewModuleName
-sed -i "s/DummyModule/${NAME}/g" src/DummyModule.cpp src/plugin.* plugin.json
-mv src/DummyModule.cpp src/${NAME}.cpp
-# New panel file?
-sed -i "s/dummy-panel/panel-file/g" src/${NAME}.cpp
-mv res/dummy-panel.svg res/panel-file.svg
-```
-
-Change slug, name and brand manually. Don't forget to update the license ;)
-
-Later on, reuse the old file from initial commit to start a new module:  
-`git show 520e96ec1f53f751b05a6ff98e91b205c5ed13d6:src/DummyModule.cpp > src/DummyModule.cpp`  
-and use the sed commands above for the cpp file. Oh no, plugin.cpp and plugin.hpp have to be adapted manually, oh no!! it's not automated!
-
-![](https://nextcould.roselove.pink/s/wsG9LS5f33YqcBd/preview)
-
-## License
-
-Panel is copyright © 2022 Jason Corder and Filipe Coelho
+It works by spawning a background thread from the module widget onAdd() method. The module sends messages to the thread through a ring buffer to add a new cable.  
+The reason for that overkill method is because engine->addCable() attempts to lock a mutex which is __*never ever*__ available during process() and step() doesn't run in headless mode.  
+The scope shows a triangle but there is no cable from the osc to the filter because it bypasses cable widgets in the gui, but the cable is there in the engine! :)
